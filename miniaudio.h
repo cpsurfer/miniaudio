@@ -88947,7 +88947,8 @@ static ma_bool32 ma_dr_flac__seek_to_pcm_frame__binary_search_internal(ma_dr_fla
                             break;
                         }
                     } else {
-                        const double approxCompressionRatio = (ma_int64)(lastSuccessfulSeekOffset - pFlac->firstFLACFramePosInBytes) / ((ma_int64)(pcmRangeLo * pFlac->channels * pFlac->bitsPerSample)/8.0);
+                        const double approxPcmRangeBytes = (ma_int64)(pcmRangeLo * pFlac->channels * pFlac->bitsPerSample)/8.0;
+                        const double approxCompressionRatio = (approxPcmRangeBytes > 0) ? ((ma_int64)(lastSuccessfulSeekOffset - pFlac->firstFLACFramePosInBytes) / approxPcmRangeBytes) : 0.0;
                         byteRangeLo = lastSuccessfulSeekOffset;
                         if (byteRangeHi < byteRangeLo) {
                             byteRangeHi = byteRangeLo;
